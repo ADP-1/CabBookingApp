@@ -1,0 +1,71 @@
+############################
+# IntelliJ IDEA
+############################
+.idea/
+*.iml
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+.kotlin/
+
+############################
+# Java / JVM
+############################
+*.class
+hs_err_pid*
+replay_pid*
+
+############################
+# Logs
+############################
+*.log
+
+############################
+# Build tools
+############################
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/
+
+############################
+# Eclipse (safe to keep even if unused)
+############################
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+############################
+# NetBeans
+############################
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+############################
+# VS Code
+############################
+.vscode/
+
+############################
+# macOS
+############################
+.DS_Store
+
+############################
+# Archives (OPTIONAL – see note below)
+############################
+*.zip
+*.tar.gz
+*.rar
