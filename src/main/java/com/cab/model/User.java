@@ -1,3 +1,5 @@
+package main.java.com.cab.model;
+
 public class User {
     private String name;
     private String email;

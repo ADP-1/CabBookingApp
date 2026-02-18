@@ -1,3 +1,6 @@
+package main.java.com.cab.dao;
+
+import main.java.com.cab.model.Booking;
 import main.java.com.cab.model.Ride;
 import main.java.com.cab.model.User;
 
@@ -8,7 +11,7 @@ public class RideBookingSystem {
     //1. lists having data
     private List<Ride> rideList = new ArrayList<>();
     private List<User> userList = new ArrayList<>();
-   //used in Booking.java
+   //used in main.java.com.cab.model.Booking.java
     public List<Booking> allBookings = new ArrayList<>();
 
     // 2. Register a new user
@@ -58,9 +61,9 @@ public class RideBookingSystem {
             Booking newBooking = new Booking(ride, passenger, seats);
             allBookings.add(newBooking);
             // Optional: Add to ride's passenger list if you kept it
-            System.out.println("Booking Confirmed! ID: " + newBooking.getBookingId());
+            System.out.println("main.java.com.cab.model.Booking Confirmed! ID: " + newBooking.getBookingId());
         } else {
-            System.out.println("Booking Failed: Not enough seats.");
+            System.out.println("main.java.com.cab.model.Booking Failed: Not enough seats.");
         }
     }
 
@@ -106,7 +109,7 @@ public class RideBookingSystem {
         for (Booking b : allBookings) {
             if (b.getRide().equals(ride)) {
                 b.setStatus("CANCELLED_BY_DRIVER");
-                System.out.println("Booking " + b.getBookingId() + " was cancelled as the ride was removed.");
+                System.out.println("main.java.com.cab.model.Booking " + b.getBookingId() + " was cancelled as the ride was removed.");
             }
         }
         // 2. Remove ride from system

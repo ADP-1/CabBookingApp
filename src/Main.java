@@ -1,3 +1,7 @@
+import main.java.com.cab.dao.RideBookingSystem;
+import main.java.com.cab.model.Ride;
+import main.java.com.cab.model.User;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,15 +13,15 @@ public class Main {
         User currentUser = null; // Tracks the currently logged-in user
 
         while (true) {
-            System.out.println("\n--- Cab Booking System ---");
+            System.out.println("\n--- Cab main.java.com.cab.model.Booking System ---");
             if (currentUser != null) {
                 System.out.println("Logged in as: " + currentUser.getName());
             }
-            System.out.println("1. Register User");
+            System.out.println("1. Register main.java.com.cab.model.User");
             System.out.println("2. Login");
-            System.out.println("3. Create Ride (Driver)");
+            System.out.println("3. Create main.java.com.cab.model.Ride (Driver)");
             System.out.println("4. View/Search Rides");
-            System.out.println("5. Book Ride (Passenger)");
+            System.out.println("5. Book main.java.com.cab.model.Ride (Passenger)");
             System.out.println("6. Update My Profile");
             System.out.println("7. Delete My Account");
             System.out.println("8. Manage My Rides (Driver: Update/Cancel)");
@@ -60,7 +64,7 @@ public class Main {
                     }
                     break;
 
-                case 3: // Create Ride
+                case 3: // Create main.java.com.cab.model.Ride
                     if (currentUser == null) {
                         System.out.println("Please login first.");
                         break;
@@ -131,12 +135,12 @@ public class Main {
                     if(myRides.isEmpty()) {
                         System.out.println("You have no active rides.");
                     } else {
-                        // Display User's Rides
+                        // Display main.java.com.cab.model.User's Rides
                         for(int i=0; i<myRides.size(); i++) {
                             System.out.println((i+1) + ". " + myRides.get(i).getSource() + " to " + myRides.get(i).getDestination());
                         }
 
-                        System.out.println("Enter Ride Number to manage (0 to go back):");
+                        System.out.println("Enter main.java.com.cab.model.Ride Number to manage (0 to go back):");
                         int rIdx = sc.nextInt() - 1;
                         sc.nextLine(); // consume newline
 

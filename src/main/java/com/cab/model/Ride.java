@@ -1,4 +1,4 @@
-import main.java.com.cab.model.User;
+package main.java.com.cab.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class Ride {
 
     // Helper to print details
     public void printRideDetails() {
-        System.out.println("Ride from " + source + " to " + destination);
+        System.out.println("main.java.com.cab.model.Ride from " + source + " to " + destination);
         System.out.println("Driver: " + (createdBy != null ? createdBy.getName() : "Unknown"));
         System.out.println("Passengers:");
         if (passengers.isEmpty()) {
@@ -73,7 +73,7 @@ public class Ride {
 
     @Override
     public String toString() {
-        return "Ride{" +
+        return "main.java.com.cab.model.Ride{" +
                 "source='" + source + '\'' +
                 ", destination='" + destination + '\'' +
                 ", fare=" + fare +
