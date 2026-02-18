@@ -1,4 +1,5 @@
-package main.java.com.cab.model;
+package com.cab.model;
+
 import java.util.UUID;
 
 public class Booking {
@@ -25,8 +26,8 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "main.java.com.cab.model.Booking[ID=" + bookingId + " | Status=" + status +
-                " | main.java.com.cab.model.Ride=" + ride.getSource() + "->" + ride.getDestination() +
+        return "Booking[ID=" + bookingId + " | Status=" + status +
+                " | Ride=" + ride.getSource() + "->" + ride.getDestination() +
                 " | Seats=" + seatsBooked + "]";
     }
 }

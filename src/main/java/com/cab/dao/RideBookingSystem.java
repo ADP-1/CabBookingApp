@@ -1,8 +1,8 @@
-package main.java.com.cab.dao;
+package com.cab.dao;
 
-import main.java.com.cab.model.Booking;
-import main.java.com.cab.model.Ride;
-import main.java.com.cab.model.User;
+import com.cab.model.Booking;
+import com.cab.model.Ride;
+import com.cab.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,13 @@ public class RideBookingSystem {
     //1. lists having data
     private List<Ride> rideList = new ArrayList<>();
     private List<User> userList = new ArrayList<>();
-   //used in main.java.com.cab.model.Booking.java
+    //used in Booking.java
     public List<Booking> allBookings = new ArrayList<>();
 
     // 2. Register a new user
     public void registerUser(User user) {
         userList.add(user);
-        System.out.println("main.java.com.cab.model.User " + user.getName() + " registered successfully!");
+        System.out.println("User " + user.getName() + " registered successfully!");
     }
 
     // 3. Login logic
@@ -30,13 +30,13 @@ public class RideBookingSystem {
         return null; // Login failed
     }
 
-    // 4. Create a ride (Added main.java.com.cab.model.User creator parameter)
+    // 4. Create a ride (Added User creator parameter)
     public void createRide(User creator, String source, String destination, int total_seats, double fare) {
         // Initial available seats = total seats
         Ride ride = new Ride(source, destination, total_seats, total_seats, fare);
-        ride.setCreatedBy(creator); // we need a setter in main.java.com.cab.model.Ride.java or allow direct access
+        ride.setCreatedBy(creator); // we need a setter in Ride.java or allow direct access
         rideList.add(ride);
-        System.out.println("main.java.com.cab.model.Ride created successfully!");
+        System.out.println("Ride created successfully!");
     }
 
     public List<Ride> getRideList() {
@@ -61,9 +61,9 @@ public class RideBookingSystem {
             Booking newBooking = new Booking(ride, passenger, seats);
             allBookings.add(newBooking);
             // Optional: Add to ride's passenger list if you kept it
-            System.out.println("main.java.com.cab.model.Booking Confirmed! ID: " + newBooking.getBookingId());
+            System.out.println("Booking Confirmed! ID: " + newBooking.getBookingId());
         } else {
-            System.out.println("main.java.com.cab.model.Booking Failed: Not enough seats.");
+            System.out.println("Booking Failed: Not enough seats.");
         }
     }
 
@@ -100,7 +100,7 @@ public class RideBookingSystem {
         ride.setSource(newSource);
         ride.setDestination(newDest);
         ride.setFare(newFare);
-        System.out.println("main.java.com.cab.model.Ride details updated.");
+        System.out.println("Ride details updated.");
     }
 
     // --- FEATURE: CANCEL RIDE (By Driver) ---
@@ -109,11 +109,11 @@ public class RideBookingSystem {
         for (Booking b : allBookings) {
             if (b.getRide().equals(ride)) {
                 b.setStatus("CANCELLED_BY_DRIVER");
-                System.out.println("main.java.com.cab.model.Booking " + b.getBookingId() + " was cancelled as the ride was removed.");
+                System.out.println("Booking " + b.getBookingId() + " was cancelled as the ride was removed.");
             }
         }
         // 2. Remove ride from system
         rideList.remove(ride);
-        System.out.println("main.java.com.cab.model.Ride has been cancelled and removed.");
+        System.out.println("Ride has been cancelled and removed.");
     }
 }

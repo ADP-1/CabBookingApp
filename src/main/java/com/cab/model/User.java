@@ -1,4 +1,4 @@
-package main.java.com.cab.model;
+package com.cab.model;
 
 public class User {
     private String name;

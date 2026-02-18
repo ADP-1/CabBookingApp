@@ -1,4 +1,4 @@
-package main.java.com.cab.model;
+package com.cab.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,6 @@ public class Ride {
     // MAPPINGS
     private User createdBy;           // The Driver (One-to-One)
     private List<User> passengers;    // The Passengers (One-to-Many)
-
-
-
 
     public Ride(String source, String destination, int total_seats, int available_seats, double fare) {
         this.source = source;
@@ -46,7 +43,7 @@ public class Ride {
 
     // Helper to print details
     public void printRideDetails() {
-        System.out.println("main.java.com.cab.model.Ride from " + source + " to " + destination);
+        System.out.println("Ride from " + source + " to " + destination);
         System.out.println("Driver: " + (createdBy != null ? createdBy.getName() : "Unknown"));
         System.out.println("Passengers:");
         if (passengers.isEmpty()) {
@@ -73,7 +70,7 @@ public class Ride {
 
     @Override
     public String toString() {
-        return "main.java.com.cab.model.Ride{" +
+        return "Ride{" +
                 "source='" + source + '\'' +
                 ", destination='" + destination + '\'' +
                 ", fare=" + fare +
