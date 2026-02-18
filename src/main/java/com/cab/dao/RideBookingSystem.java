@@ -1,3 +1,6 @@
+import main.java.com.cab.model.Ride;
+import main.java.com.cab.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +14,7 @@ public class RideBookingSystem {
     // 2. Register a new user
     public void registerUser(User user) {
         userList.add(user);
-        System.out.println("User " + user.getName() + " registered successfully!");
+        System.out.println("main.java.com.cab.model.User " + user.getName() + " registered successfully!");
     }
 
     // 3. Login logic
@@ -24,13 +27,13 @@ public class RideBookingSystem {
         return null; // Login failed
     }
 
-    // 4. Create a ride (Added User creator parameter)
+    // 4. Create a ride (Added main.java.com.cab.model.User creator parameter)
     public void createRide(User creator, String source, String destination, int total_seats, double fare) {
         // Initial available seats = total seats
         Ride ride = new Ride(source, destination, total_seats, total_seats, fare);
-        ride.setCreatedBy(creator); // we need a setter in Ride.java or allow direct access
+        ride.setCreatedBy(creator); // we need a setter in main.java.com.cab.model.Ride.java or allow direct access
         rideList.add(ride);
-        System.out.println("Ride created successfully!");
+        System.out.println("main.java.com.cab.model.Ride created successfully!");
     }
 
     public List<Ride> getRideList() {
@@ -94,7 +97,7 @@ public class RideBookingSystem {
         ride.setSource(newSource);
         ride.setDestination(newDest);
         ride.setFare(newFare);
-        System.out.println("Ride details updated.");
+        System.out.println("main.java.com.cab.model.Ride details updated.");
     }
 
     // --- FEATURE: CANCEL RIDE (By Driver) ---
@@ -108,6 +111,6 @@ public class RideBookingSystem {
         }
         // 2. Remove ride from system
         rideList.remove(ride);
-        System.out.println("Ride has been cancelled and removed.");
+        System.out.println("main.java.com.cab.model.Ride has been cancelled and removed.");
     }
 }

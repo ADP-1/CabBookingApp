@@ -1,3 +1,5 @@
+import main.java.com.cab.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
