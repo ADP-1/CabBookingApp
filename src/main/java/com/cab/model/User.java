@@ -9,8 +9,7 @@ public class User {
     private long mobile;
     private String pwd;
 
-    // Driving License fields
-    private boolean hasLicense;
+private boolean hasLicense;
     private String licenseNumber;
     private Integer licenseExpiryMonth;
     private Integer licenseExpiryYear;
@@ -21,8 +20,7 @@ public class User {
         this.licenseVerified = false;
     }
 
-    // Core getters/setters
-    public int getUserId() {
+public int getUserId() {
         return userId;
     }
 
@@ -62,8 +60,7 @@ public class User {
         this.pwd = pwd;
     }
 
-    // License getters/setters
-    public boolean isHasLicense() {
+public boolean isHasLicense() {
         return hasLicense;
     }
 
@@ -103,10 +100,7 @@ public class User {
         this.licenseVerified = licenseVerified;
     }
 
-    /**
-     * Check if the driving license has expired
-     */
-    public boolean isLicenseExpired() {
+public boolean isLicenseExpired() {
         if (!hasLicense || licenseExpiryMonth == null || licenseExpiryYear == null)
             return true;
         LocalDate now = LocalDate.now();
@@ -117,17 +111,11 @@ public class User {
         return false;
     }
 
-    /**
-     * Check if user can create rides (has valid, verified, non-expired license)
-     */
-    public boolean canCreateRides() {
+public boolean canCreateRides() {
         return hasLicense && licenseVerified && !isLicenseExpired();
     }
 
-    /**
-     * Get license expiry as "MM/YYYY" or "Not Available"
-     */
-    public String getLicenseExpiryFormatted() {
+public String getLicenseExpiryFormatted() {
         if (licenseExpiryMonth != null && licenseExpiryYear != null) {
             return String.format("%02d/%d", licenseExpiryMonth, licenseExpiryYear);
         }

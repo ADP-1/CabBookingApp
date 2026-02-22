@@ -8,15 +8,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Data Access Object for User operations (with Driving License support)
- */
 public class UserDAO {
 
-    /**
-     * Register a new user (with optional driving license)
-     */
-    public boolean registerUser(User user) {
+public boolean registerUser(User user) {
         String sql = "INSERT INTO users (name, email, mobile, password, has_license, " +
                 "license_number, license_expiry_month, license_expiry_year, " +
                 "license_verified, license_uploaded_at) " +
@@ -35,7 +29,7 @@ public class UserDAO {
                 pstmt.setString(6, user.getLicenseNumber());
                 pstmt.setInt(7, user.getLicenseExpiryMonth());
                 pstmt.setInt(8, user.getLicenseExpiryYear());
-                pstmt.setBoolean(9, true); // auto-verify on registration
+                pstmt.setBoolean(9, true); 
                 pstmt.setTimestamp(10, new Timestamp(System.currentTimeMillis()));
             } else {
                 pstmt.setNull(6, Types.VARCHAR);
@@ -58,10 +52,7 @@ public class UserDAO {
         return false;
     }
 
-    /**
-     * Login — validate credentials and return full user object with license info
-     */
-    public User loginUser(String email, String password) {
+public User loginUser(String email, String password) {
         String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -86,10 +77,7 @@ public class UserDAO {
         return null;
     }
 
-    /**
-     * Get user by ID (includes license info)
-     */
-    public User getUserById(int userId) {
+public User getUserById(int userId) {
         String sql = "SELECT * FROM users WHERE user_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -109,10 +97,7 @@ public class UserDAO {
         return null;
     }
 
-    /**
-     * Update basic profile (name, email, mobile)
-     */
-    public boolean updateUser(User user) {
+public boolean updateUser(User user) {
         String sql = "UPDATE users SET name = ?, email = ?, mobile = ? WHERE user_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -136,10 +121,7 @@ public class UserDAO {
         return false;
     }
 
-    /**
-     * Add or update driving license details
-     */
-    public boolean updateLicense(int userId, String licenseNumber,
+public boolean updateLicense(int userId, String licenseNumber,
             int expiryMonth, int expiryYear) {
         String sql = "UPDATE users SET has_license = TRUE, license_number = ?, " +
                 "license_expiry_month = ?, license_expiry_year = ?, " +
@@ -168,10 +150,7 @@ public class UserDAO {
         return false;
     }
 
-    /**
-     * Check if user has a valid, non-expired, verified license (DB-level check)
-     */
-    public boolean canUserCreateRides(int userId) {
+public boolean canUserCreateRides(int userId) {
         String sql = "SELECT has_license, license_verified, " +
                 "license_expiry_month, license_expiry_year " +
                 "FROM users WHERE user_id = ?";
@@ -208,10 +187,7 @@ public class UserDAO {
         return false;
     }
 
-    /**
-     * Delete user account
-     */
-    public boolean deleteUser(int userId) {
+public boolean deleteUser(int userId) {
         String sql = "DELETE FROM users WHERE user_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -231,10 +207,7 @@ public class UserDAO {
         return false;
     }
 
-    /**
-     * Check if an email is already registered
-     */
-    public boolean emailExists(String email) {
+public boolean emailExists(String email) {
         String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -252,10 +225,7 @@ public class UserDAO {
         return false;
     }
 
-    /**
-     * Get all users (admin use)
-     */
-    public List<User> getAllUsers() {
+public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users ORDER BY created_at DESC";
 
@@ -274,10 +244,7 @@ public class UserDAO {
         return users;
     }
 
-    /**
-     * Helper: map a ResultSet row to a User object
-     */
-    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+private User mapResultSetToUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserId(rs.getInt("user_id"));
         user.setName(rs.getString("name"));
@@ -285,8 +252,7 @@ public class UserDAO {
         user.setMobile(rs.getLong("mobile"));
         user.setPwd(rs.getString("password"));
 
-        // License fields
-        user.setHasLicense(rs.getBoolean("has_license"));
+user.setHasLicense(rs.getBoolean("has_license"));
         user.setLicenseNumber(rs.getString("license_number"));
         user.setLicenseExpiryMonth((Integer) rs.getObject("license_expiry_month"));
         user.setLicenseExpiryYear((Integer) rs.getObject("license_expiry_year"));

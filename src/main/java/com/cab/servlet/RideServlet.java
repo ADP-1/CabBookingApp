@@ -17,15 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-/**
- * Servlet for handling ride-related operations
- * - Create ride (driver) — requires valid DL
- * - View all rides
- * - Search rides by source/destination (+ optional date)
- * - View driver's own rides
- * - Update ride details (including date/time)
- * - Cancel ride
- */
 @WebServlet("/ride")
 public class RideServlet extends HttpServlet {
 
@@ -95,11 +86,7 @@ public class RideServlet extends HttpServlet {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // GET handlers
-    // -------------------------------------------------------------------------
-
-    private void viewAllRides(HttpServletRequest request, HttpServletResponse response)
+private void viewAllRides(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         List<Ride> rides = rideDAO.getAllRides();
@@ -137,8 +124,7 @@ public class RideServlet extends HttpServlet {
             return;
         }
 
-        // Gate: user must have a valid driving license
-        User currentUser = (User) session.getAttribute("user");
+User currentUser = (User) session.getAttribute("user");
         if (!currentUser.canCreateRides()) {
             request.setAttribute("errorMessage",
                     "You need a valid driving license to create rides. " +
@@ -174,8 +160,7 @@ public class RideServlet extends HttpServlet {
                 return;
             }
 
-            // Security: only the driver who created the ride can edit it
-            User currentUser = (User) session.getAttribute("user");
+User currentUser = (User) session.getAttribute("user");
             if (ride.getCreatedBy().getUserId() != currentUser.getUserId()) {
                 request.setAttribute("errorMessage", "You can only edit your own rides!");
                 response.sendRedirect("ride?action=myRides");
@@ -190,11 +175,7 @@ public class RideServlet extends HttpServlet {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // POST handlers
-    // -------------------------------------------------------------------------
-
-    private void handleCreateRide(HttpServletRequest request, HttpServletResponse response)
+private void handleCreateRide(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
@@ -205,8 +186,7 @@ public class RideServlet extends HttpServlet {
 
         User currentUser = (User) session.getAttribute("user");
 
-        // DL gate — double-check against DB in case session object is stale
-        if (!userDAO.canUserCreateRides(currentUser.getUserId())) {
+if (!userDAO.canUserCreateRides(currentUser.getUserId())) {
             request.setAttribute("errorMessage",
                     "You need a valid driving license to create rides.");
             request.getRequestDispatcher("create-ride.jsp").forward(request, response);
@@ -220,8 +200,7 @@ public class RideServlet extends HttpServlet {
         String rideDateStr = request.getParameter("rideDate");
         String rideTimeStr = request.getParameter("rideTime");
 
-        // Validation
-        if (source == null || destination == null || totalSeatsStr == null ||
+if (source == null || destination == null || totalSeatsStr == null ||
                 fareStr == null || rideDateStr == null || rideTimeStr == null ||
                 source.trim().isEmpty() || destination.trim().isEmpty() ||
                 rideDateStr.trim().isEmpty() || rideTimeStr.trim().isEmpty()) {
@@ -233,8 +212,8 @@ public class RideServlet extends HttpServlet {
         try {
             int totalSeats = Integer.parseInt(totalSeatsStr);
             double fare = Double.parseDouble(fareStr);
-            LocalDate rideDate = LocalDate.parse(rideDateStr); // expects "YYYY-MM-DD"
-            LocalTime rideTime = LocalTime.parse(rideTimeStr); // expects "HH:mm"
+            LocalDate rideDate = LocalDate.parse(rideDateStr); 
+            LocalTime rideTime = LocalTime.parse(rideTimeStr); 
 
             if (totalSeats <= 0 || fare <= 0) {
                 request.setAttribute("errorMessage", "Seats and fare must be positive numbers!");
@@ -242,8 +221,7 @@ public class RideServlet extends HttpServlet {
                 return;
             }
 
-            // Prevent past ride date/time
-            if (rideDate.isBefore(LocalDate.now()) ||
+if (rideDate.isBefore(LocalDate.now()) ||
                     (rideDate.isEqual(LocalDate.now()) && rideTime.isBefore(LocalTime.now()))) {
                 request.setAttribute("errorMessage", "Ride date/time cannot be in the past!");
                 request.getRequestDispatcher("create-ride.jsp").forward(request, response);
@@ -275,7 +253,7 @@ public class RideServlet extends HttpServlet {
 
         String source = request.getParameter("source");
         String destination = request.getParameter("destination");
-        String rideDateStr = request.getParameter("rideDate"); // optional
+        String rideDateStr = request.getParameter("rideDate"); 
 
         if (source == null || destination == null ||
                 source.trim().isEmpty() || destination.trim().isEmpty()) {
@@ -331,8 +309,7 @@ public class RideServlet extends HttpServlet {
                 return;
             }
 
-            // Security: only the driver who created it can update
-            User currentUser = (User) session.getAttribute("user");
+User currentUser = (User) session.getAttribute("user");
             if (ride.getCreatedBy().getUserId() != currentUser.getUserId()) {
                 request.setAttribute("errorMessage", "You can only edit your own rides!");
                 response.sendRedirect("ride?action=myRides");
@@ -378,8 +355,7 @@ public class RideServlet extends HttpServlet {
         try {
             int rideId = Integer.parseInt(rideIdStr);
 
-            // Security: verify this driver owns the ride
-            Ride ride = rideDAO.getRideById(rideId);
+Ride ride = rideDAO.getRideById(rideId);
             if (ride == null) {
                 response.sendRedirect("ride?action=myRides");
                 return;
@@ -390,8 +366,7 @@ public class RideServlet extends HttpServlet {
                 return;
             }
 
-            // Cancel all passenger bookings first, then the ride
-            bookingDAO.cancelAllBookingsForRide(rideId);
+bookingDAO.cancelAllBookingsForRide(rideId);
             rideDAO.cancelRide(rideId);
 
             response.sendRedirect("ride?action=myRides");

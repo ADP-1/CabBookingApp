@@ -7,10 +7,9 @@ public class Booking {
     private Ride ride;
     private User passenger;
     private int seatsBooked;
-    private String status; // CONFIRMED, CANCELLED, CANCELLED_BY_DRIVER
+    private String status; 
 
-    // Constructor
-    public Booking(Ride ride, User passenger, int seatsBooked) {
+public Booking(Ride ride, User passenger, int seatsBooked) {
         this.bookingId = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         this.ride = ride;
         this.passenger = passenger;
@@ -18,8 +17,7 @@ public class Booking {
         this.status = "CONFIRMED";
     }
 
-    // Getters and Setters
-    public String getBookingId() {
+public String getBookingId() {
         return bookingId;
     }
 

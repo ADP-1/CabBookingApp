@@ -4,17 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 public class DBConnection {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/cab_booking_db";
     private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "toor";  // CHANGE THIS!
+    private static final String PASSWORD = "toor";
 
-    // JDBC Driver
     private static final String DRIVER = "org.postgresql.Driver";
 
-    // Static block to load driver once
     static {
         try {
             Class.forName(DRIVER);
@@ -24,7 +21,6 @@ public class DBConnection {
             e.printStackTrace();
         }
     }
-
 
     public static Connection getConnection() throws SQLException {
         try {
@@ -39,7 +35,6 @@ public class DBConnection {
         }
     }
 
-
     public static void closeConnection(Connection conn) {
         if (conn != null) {
             try {
@@ -50,7 +45,6 @@ public class DBConnection {
             }
         }
     }
-
 
     public static void main(String[] args) {
         System.out.println("Testing database connection...");

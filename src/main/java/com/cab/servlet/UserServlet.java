@@ -11,14 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * Servlet for handling user-related operations
- * - Registration (with optional driving license)
- * - Login / Logout
- * - Profile Update
- * - License Update
- * - Account Deletion
- */
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
 
@@ -83,11 +75,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Handlers
-    // -------------------------------------------------------------------------
-
-    private void handleRegister(HttpServletRequest request, HttpServletResponse response)
+private void handleRegister(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String name = request.getParameter("name");
@@ -96,8 +84,7 @@ public class UserServlet extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        // Basic validation
-        if (name == null || email == null || mobileStr == null || password == null ||
+if (name == null || email == null || mobileStr == null || password == null ||
                 name.trim().isEmpty() || email.trim().isEmpty()) {
             request.setAttribute("errorMessage", "All fields are required!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -125,8 +112,7 @@ public class UserServlet extends HttpServlet {
             user.setMobile(mobile);
             user.setPwd(password);
 
-            // Optional driving license
-            String hasLicenseParam = request.getParameter("hasLicense");
+String hasLicenseParam = request.getParameter("hasLicense");
             boolean hasLicense = "on".equals(hasLicenseParam) || "true".equals(hasLicenseParam);
             user.setHasLicense(hasLicense);
 
@@ -141,7 +127,7 @@ public class UserServlet extends HttpServlet {
                     user.setLicenseExpiryMonth(Integer.parseInt(expiryMonthStr));
                     user.setLicenseExpiryYear(Integer.parseInt(expiryYearStr));
                 } else {
-                    // Missing license details — register without license
+                    
                     user.setHasLicense(false);
                 }
             }
@@ -248,10 +234,7 @@ public class UserServlet extends HttpServlet {
         request.getRequestDispatcher("profile.jsp").forward(request, response);
     }
 
-    /**
-     * Handle driving license update from profile page
-     */
-    private void handleUpdateLicense(HttpServletRequest request, HttpServletResponse response)
+private void handleUpdateLicense(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
@@ -280,7 +263,7 @@ public class UserServlet extends HttpServlet {
                     currentUser.getUserId(), licenseNumber.trim(), expiryMonth, expiryYear);
 
             if (success) {
-                // Refresh user in session
+                
                 User refreshed = userDAO.getUserById(currentUser.getUserId());
                 if (refreshed != null)
                     session.setAttribute("user", refreshed);

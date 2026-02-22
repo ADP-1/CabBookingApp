@@ -8,8 +8,7 @@ import java.util.List;
 
 public class Ride {
 
-    // Database fields
-    private int rideId;
+private int rideId;
     private String source;
     private String destination;
     private int totalSeats;
@@ -17,16 +16,13 @@ public class Ride {
     private double fare;
     private String status;
 
-    // Date and Time fields
-    private LocalDate rideDate;
+private LocalDate rideDate;
     private LocalTime rideTime;
 
-    // Relationships
-    private User createdBy;
+private User createdBy;
     private List<User> passengers;
 
-    // Constructors
-    public Ride() {
+public Ride() {
         this.passengers = new ArrayList<>();
         this.status = "ACTIVE";
     }
@@ -44,8 +40,7 @@ public class Ride {
         this.status = "ACTIVE";
     }
 
-    // Getters and Setters
-    public int getRideId() {
+public int getRideId() {
         return rideId;
     }
 
@@ -137,46 +132,31 @@ public class Ride {
         passengers.add(user);
     }
 
-    /**
-     * Get formatted date for display — "dd MMM yyyy" (e.g., "23 Feb 2026")
-     */
-    public String getFormattedDate() {
+public String getFormattedDate() {
         if (rideDate == null)
             return "Not Set";
         return rideDate.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
     }
 
-    /**
-     * Get formatted time for display — "hh:mm a" (e.g., "02:30 PM")
-     */
-    public String getFormattedTime() {
+public String getFormattedTime() {
         if (rideTime == null)
             return "Not Set";
         return rideTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
     }
 
-    /**
-     * Get date in ISO format for HTML date input ("YYYY-MM-DD")
-     */
-    public String getDateForInput() {
+public String getDateForInput() {
         if (rideDate == null)
             return "";
         return rideDate.toString();
     }
 
-    /**
-     * Get time in HH:mm format for HTML time input
-     */
-    public String getTimeForInput() {
+public String getTimeForInput() {
         if (rideTime == null)
             return "";
         return rideTime.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
-    /**
-     * Check if ride date/time has already passed
-     */
-    public boolean isPastRide() {
+public boolean isPastRide() {
         if (rideDate == null || rideTime == null)
             return false;
         LocalDate today = LocalDate.now();
@@ -188,10 +168,7 @@ public class Ride {
         return false;
     }
 
-    /**
-     * Check if ride is scheduled for today
-     */
-    public boolean isToday() {
+public boolean isToday() {
         if (rideDate == null)
             return false;
         return rideDate.isEqual(LocalDate.now());

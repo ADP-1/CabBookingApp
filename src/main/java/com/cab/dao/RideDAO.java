@@ -10,14 +10,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Data Access Object for Ride operations (with date/time support)
- */
 public class RideDAO {
 
-    /**
-     * Create a new ride with date and time
-     */
     public int createRide(Ride ride, int driverId) {
         String sql = "INSERT INTO rides (source, destination, total_seats, available_seats, " +
                 "fare, driver_id, ride_date, ride_time) " +
@@ -50,9 +44,6 @@ public class RideDAO {
         return -1;
     }
 
-    /**
-     * Get all active upcoming rides (today and future), ordered by date/time
-     */
     public List<Ride> getAllRides() {
         List<Ride> rides = new ArrayList<>();
         String sql = "SELECT r.*, u.name as driver_name, u.email as driver_email " +
@@ -78,9 +69,6 @@ public class RideDAO {
         return rides;
     }
 
-    /**
-     * Search rides by source and destination (upcoming only)
-     */
     public List<Ride> searchRides(String source, String destination) {
         List<Ride> rides = new ArrayList<>();
         String sql = "SELECT r.*, u.name as driver_name, u.email as driver_email " +
@@ -112,10 +100,7 @@ public class RideDAO {
         return rides;
     }
 
-    /**
-     * Search rides by source, destination, and specific date
-     */
-    public List<Ride> searchRidesByDate(String source, String destination, LocalDate date) {
+public List<Ride> searchRidesByDate(String source, String destination, LocalDate date) {
         List<Ride> rides = new ArrayList<>();
         String sql = "SELECT r.*, u.name as driver_name, u.email as driver_email " +
                 "FROM rides r " +
@@ -146,10 +131,7 @@ public class RideDAO {
         return rides;
     }
 
-    /**
-     * Get ride by ID
-     */
-    public Ride getRideById(int rideId) {
+public Ride getRideById(int rideId) {
         String sql = "SELECT r.*, u.name as driver_name, u.email as driver_email " +
                 "FROM rides r " +
                 "JOIN users u ON r.driver_id = u.user_id " +
@@ -172,10 +154,7 @@ public class RideDAO {
         return null;
     }
 
-    /**
-     * Get all rides created by a specific driver, newest first
-     */
-    public List<Ride> getRidesByDriver(int driverId) {
+public List<Ride> getRidesByDriver(int driverId) {
         List<Ride> rides = new ArrayList<>();
         String sql = "SELECT r.*, u.name as driver_name, u.email as driver_email " +
                 "FROM rides r " +
@@ -200,10 +179,7 @@ public class RideDAO {
         return rides;
     }
 
-    /**
-     * Update ride details including date and time
-     */
-    public boolean updateRide(Ride ride) {
+public boolean updateRide(Ride ride) {
         String sql = "UPDATE rides SET source = ?, destination = ?, fare = ?, " +
                 "ride_date = ?, ride_time = ? WHERE ride_id = ?";
 
@@ -230,11 +206,7 @@ public class RideDAO {
         return false;
     }
 
-    /**
-     * Update available seats (seatsChange is negative when booking, positive when
-     * cancelling)
-     */
-    public boolean updateAvailableSeats(int rideId, int seatsChange) {
+public boolean updateAvailableSeats(int rideId, int seatsChange) {
         String sql = "UPDATE rides SET available_seats = available_seats + ? " +
                 "WHERE ride_id = ? AND available_seats + ? >= 0 " +
                 "AND available_seats + ? <= total_seats";
@@ -260,10 +232,7 @@ public class RideDAO {
         return false;
     }
 
-    /**
-     * Cancel a ride (soft delete — status set to CANCELLED)
-     */
-    public boolean cancelRide(int rideId) {
+public boolean cancelRide(int rideId) {
         String sql = "UPDATE rides SET status = 'CANCELLED' WHERE ride_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -283,10 +252,7 @@ public class RideDAO {
         return false;
     }
 
-    /**
-     * Helper: map a ResultSet row to a Ride object
-     */
-    private Ride mapResultSetToRide(ResultSet rs) throws SQLException {
+private Ride mapResultSetToRide(ResultSet rs) throws SQLException {
         Ride ride = new Ride();
         ride.setRideId(rs.getInt("ride_id"));
         ride.setSource(rs.getString("source"));
