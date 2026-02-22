@@ -6,7 +6,7 @@ import com.cab.util.DBConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +100,7 @@ public class RideDAO {
         return rides;
     }
 
-public List<Ride> searchRidesByDate(String source, String destination, LocalDate date) {
+    public List<Ride> searchRidesByDate(String source, String destination, LocalDate date) {
         List<Ride> rides = new ArrayList<>();
         String sql = "SELECT r.*, u.name as driver_name, u.email as driver_email " +
                 "FROM rides r " +
@@ -131,7 +131,7 @@ public List<Ride> searchRidesByDate(String source, String destination, LocalDate
         return rides;
     }
 
-public Ride getRideById(int rideId) {
+    public Ride getRideById(int rideId) {
         String sql = "SELECT r.*, u.name as driver_name, u.email as driver_email " +
                 "FROM rides r " +
                 "JOIN users u ON r.driver_id = u.user_id " +
@@ -154,7 +154,7 @@ public Ride getRideById(int rideId) {
         return null;
     }
 
-public List<Ride> getRidesByDriver(int driverId) {
+    public List<Ride> getRidesByDriver(int driverId) {
         List<Ride> rides = new ArrayList<>();
         String sql = "SELECT r.*, u.name as driver_name, u.email as driver_email " +
                 "FROM rides r " +
@@ -179,7 +179,7 @@ public List<Ride> getRidesByDriver(int driverId) {
         return rides;
     }
 
-public boolean updateRide(Ride ride) {
+    public boolean updateRide(Ride ride) {
         String sql = "UPDATE rides SET source = ?, destination = ?, fare = ?, " +
                 "ride_date = ?, ride_time = ? WHERE ride_id = ?";
 
@@ -206,7 +206,7 @@ public boolean updateRide(Ride ride) {
         return false;
     }
 
-public boolean updateAvailableSeats(int rideId, int seatsChange) {
+    public boolean updateAvailableSeats(int rideId, int seatsChange) {
         String sql = "UPDATE rides SET available_seats = available_seats + ? " +
                 "WHERE ride_id = ? AND available_seats + ? >= 0 " +
                 "AND available_seats + ? <= total_seats";
@@ -232,7 +232,7 @@ public boolean updateAvailableSeats(int rideId, int seatsChange) {
         return false;
     }
 
-public boolean cancelRide(int rideId) {
+    public boolean cancelRide(int rideId) {
         String sql = "UPDATE rides SET status = 'CANCELLED' WHERE ride_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -252,7 +252,7 @@ public boolean cancelRide(int rideId) {
         return false;
     }
 
-private Ride mapResultSetToRide(ResultSet rs) throws SQLException {
+    private Ride mapResultSetToRide(ResultSet rs) throws SQLException {
         Ride ride = new Ride();
         ride.setRideId(rs.getInt("ride_id"));
         ride.setSource(rs.getString("source"));

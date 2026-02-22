@@ -8,7 +8,6 @@ import com.cab.util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class BookingDAO {
 
@@ -19,9 +18,9 @@ public class BookingDAO {
 
         try {
             conn = DBConnection.getConnection();
-            conn.setAutoCommit(false); 
+            conn.setAutoCommit(false);
 
-String checkSql = "SELECT available_seats FROM rides WHERE ride_id = ? FOR UPDATE";
+            String checkSql = "SELECT available_seats FROM rides WHERE ride_id = ? FOR UPDATE";
             PreparedStatement checkStmt = conn.prepareStatement(checkSql);
             checkStmt.setInt(1, rideId);
             ResultSet rs = checkStmt.executeQuery();
@@ -39,26 +38,29 @@ String checkSql = "SELECT available_seats FROM rides WHERE ride_id = ? FOR UPDAT
                 return null;
             }
 
-String bookingId = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-            String insertSql = "INSERT INTO bookings (booking_id, ride_id, passenger_id, seats_booked, status) " +
-                    "VALUES (?, ?, ?, ?, 'CONFIRMED')";
+            String insertSql = "INSERT INTO bookings (ride_id, passenger_id, seats_booked, status) " +
+                    "VALUES (?, ?, ?, 'CONFIRMED') RETURNING booking_id";
             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
-            insertStmt.setString(1, bookingId);
-            insertStmt.setInt(2, rideId);
-            insertStmt.setInt(3, passengerId);
-            insertStmt.setInt(4, seatsBooked);
-            insertStmt.executeUpdate();
+            insertStmt.setInt(1, rideId);
+            insertStmt.setInt(2, passengerId);
+            insertStmt.setInt(3, seatsBooked);
+            ResultSet insertRs = insertStmt.executeQuery();
+            if (!insertRs.next()) {
+                conn.rollback();
+                return null;
+            }
+            String bookingId = insertRs.getString("booking_id");
 
-String updateSql = "UPDATE rides SET available_seats = available_seats - ? WHERE ride_id = ?";
+            String updateSql = "UPDATE rides SET available_seats = available_seats - ? WHERE ride_id = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateSql);
             updateStmt.setInt(1, seatsBooked);
             updateStmt.setInt(2, rideId);
             updateStmt.executeUpdate();
 
-            conn.commit(); 
+            conn.commit();
             System.out.println("Booking created: " + bookingId);
 
-return getBookingById(bookingId);
+            return getBookingById(bookingId);
 
         } catch (SQLException e) {
             System.err.println("Error creating booking: " + e.getMessage());
@@ -83,7 +85,7 @@ return getBookingById(bookingId);
         return null;
     }
 
-public Booking getBookingById(String bookingId) {
+    public Booking getBookingById(String bookingId) {
         String sql = "SELECT b.*, " +
                 "r.source, r.destination, r.fare, " +
                 "u.name as passenger_name, u.email as passenger_email " +
@@ -93,7 +95,7 @@ public Booking getBookingById(String bookingId) {
                 "WHERE b.booking_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, bookingId);
             ResultSet rs = pstmt.executeQuery();
@@ -123,7 +125,7 @@ public Booking getBookingById(String bookingId) {
                 "ORDER BY b.created_at DESC";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, passengerId);
             ResultSet rs = pstmt.executeQuery();
@@ -152,7 +154,7 @@ public Booking getBookingById(String bookingId) {
                 "ORDER BY b.created_at DESC";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, rideId);
             ResultSet rs = pstmt.executeQuery();
@@ -176,7 +178,7 @@ public Booking getBookingById(String bookingId) {
             conn = DBConnection.getConnection();
             conn.setAutoCommit(false);
 
-String selectSql = "SELECT ride_id, seats_booked FROM bookings WHERE booking_id = ?";
+            String selectSql = "SELECT ride_id, seats_booked FROM bookings WHERE booking_id = ?";
             PreparedStatement selectStmt = conn.prepareStatement(selectSql);
             selectStmt.setString(1, bookingId);
             ResultSet rs = selectStmt.executeQuery();
@@ -190,12 +192,12 @@ String selectSql = "SELECT ride_id, seats_booked FROM bookings WHERE booking_id 
             int rideId = rs.getInt("ride_id");
             int seatsBooked = rs.getInt("seats_booked");
 
-String updateBookingSql = "UPDATE bookings SET status = 'CANCELLED' WHERE booking_id = ?";
+            String updateBookingSql = "UPDATE bookings SET status = 'CANCELLED' WHERE booking_id = ?";
             PreparedStatement updateBookingStmt = conn.prepareStatement(updateBookingSql);
             updateBookingStmt.setString(1, bookingId);
             updateBookingStmt.executeUpdate();
 
-String updateRideSql = "UPDATE rides SET available_seats = available_seats + ? WHERE ride_id = ?";
+            String updateRideSql = "UPDATE rides SET available_seats = available_seats + ? WHERE ride_id = ?";
             PreparedStatement updateRideStmt = conn.prepareStatement(updateRideSql);
             updateRideStmt.setInt(1, seatsBooked);
             updateRideStmt.setInt(2, rideId);
@@ -233,7 +235,7 @@ String updateRideSql = "UPDATE rides SET available_seats = available_seats + ? W
                 "WHERE ride_id = ? AND status = 'CONFIRMED'";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, rideId);
             int rowsAffected = pstmt.executeUpdate();
@@ -249,19 +251,19 @@ String updateRideSql = "UPDATE rides SET available_seats = available_seats + ? W
     }
 
     private Booking mapResultSetToBooking(ResultSet rs) throws SQLException {
-        
+
         Ride ride = new Ride();
         ride.setRideId(rs.getInt("ride_id"));
         ride.setSource(rs.getString("source"));
         ride.setDestination(rs.getString("destination"));
         ride.setFare(rs.getDouble("fare"));
 
-User passenger = new User();
+        User passenger = new User();
         passenger.setUserId(rs.getInt("passenger_id"));
         passenger.setName(rs.getString("passenger_name"));
         passenger.setEmail(rs.getString("passenger_email"));
 
-Booking booking = new Booking(ride, passenger, rs.getInt("seats_booked"));
+        Booking booking = new Booking(ride, passenger, rs.getInt("seats_booked"));
         booking.setBookingId(rs.getString("booking_id"));
         booking.setStatus(rs.getString("status"));
 
