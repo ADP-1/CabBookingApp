@@ -77,11 +77,12 @@
                                                                         <%= booking.getBookingId() %>
                                                                     </div>
                                                                 </div>
-                                                                <span
-                                                                    class="badge badge-<%= booking.getStatus().equals('CONFIRMED') ? "
-                                                                    success" : "danger" %>">
-                                                                    <%= booking.getStatus() %>
-                                                                </span>
+                                                                <% String bClass="CONFIRMED"
+                                                                    .equals(booking.getStatus()) ? "success" : "danger"
+                                                                    ; %>
+                                                                    <span class="badge badge-<%= bClass %>">
+                                                                        <%= booking.getStatus() %>
+                                                                    </span>
                                                             </div>
 
                                                             <div class="booking-details">

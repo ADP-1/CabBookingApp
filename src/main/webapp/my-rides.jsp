@@ -64,71 +64,74 @@
                                             <% } else { %>
                                                 <div class="rides-grid">
                                                     <% for (Ride ride : rides) { %>
-                                                        <div class="ride-card <%= ride.getStatus().equals(" CANCELLED")
-                                                            ? "cancelled" : "" %>">
-                                                            <div class="ride-header">
-                                                                <div class="ride-route">
-                                                                    <%= ride.getSource() %>
-                                                                        <span class="route-arrow">→</span>
-                                                                        <%= ride.getDestination() %>
-                                                                </div>
-                                                                <span
-                                                                    class="badge badge-<%= ride.getStatus().equals('ACTIVE') ? "
-                                                                    success" : "danger" %>">
-                                                                    <%= ride.getStatus() %>
-                                                                </span>
-                                                            </div>
-                                                            <div class="ride-details">
-                                                                <div class="detail-item"><span
-                                                                        class="ms">calendar_today</span><strong>Date</strong>
-                                                                    <%= ride.getFormattedDate() %>
-                                                                </div>
-                                                                <div class="detail-item"><span
-                                                                        class="ms">schedule</span><strong>Time</strong>
-                                                                    <%= ride.getFormattedTime() %>
-                                                                </div>
-                                                                <div class="detail-item"><span
-                                                                        class="ms">currency_rupee</span><strong>Fare</strong>₹
-                                                                    <%= String.format("%.2f", ride.getFare()) %> / seat
-                                                                </div>
-                                                                <div class="detail-item"><span
-                                                                        class="ms">event_seat</span><strong>Seats</strong>
-                                                                    <%= ride.getAvailableSeats() %> available of <%=
-                                                                            ride.getTotalSeats() %>
-                                                                </div>
-                                                                <div class="detail-item"><span
-                                                                        class="ms">people</span><strong>Booked</strong>
-                                                                    <%= ride.getTotalSeats() - ride.getAvailableSeats()
-                                                                        %> passengers
-                                                                </div>
-                                                            </div>
-                                                            <% if (ride.getStatus().equals("ACTIVE")) { %>
-                                                                <div class="ride-actions">
-                                                                    <a href="ride?action=edit&rideId=<%= ride.getRideId() %>"
-                                                                        class="btn btn-secondary btn-sm">
-                                                                        <span class="ms">edit</span> Edit
-                                                                    </a>
-                                                                    <form action="ride" method="POST"
-                                                                        style="display:inline;"
-                                                                        onsubmit="return confirm('Cancel this ride? All bookings will be voided.');">
-                                                                        <input type="hidden" name="action"
-                                                                            value="cancel">
-                                                                        <input type="hidden" name="rideId"
-                                                                            value="<%= ride.getRideId() %>">
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger btn-sm"><span
-                                                                                class="ms">cancel</span> Cancel</button>
-                                                                    </form>
-                                                                </div>
-                                                                <% } else { %>
-                                                                    <div class="ride-actions">
-                                                                        <button class="btn btn-secondary btn-sm"
-                                                                            disabled><span class="ms">block</span>
-                                                                            Cancelled</button>
+                                                        <% String cardClass="CANCELLED" .equals(ride.getStatus())
+                                                            ? "cancelled" : "" ; %>
+                                                            <div class="ride-card <%= cardClass %>">
+                                                                <div class="ride-header">
+                                                                    <div class="ride-route">
+                                                                        <%= ride.getSource() %>
+                                                                            <span class="route-arrow">→</span>
+                                                                            <%= ride.getDestination() %>
                                                                     </div>
-                                                                    <% } %>
-                                                        </div>
-                                                        <% } %>
+                                                                    <% String rClass="ACTIVE" .equals(ride.getStatus())
+                                                                        ? "success" : "danger" ; %>
+                                                                        <span class="badge badge-<%= rClass %>">
+                                                                            <%= ride.getStatus() %>
+                                                                        </span>
+                                                                </div>
+                                                                <div class="ride-details">
+                                                                    <div class="detail-item"><span
+                                                                            class="ms">calendar_today</span><strong>Date</strong>
+                                                                        <%= ride.getFormattedDate() %>
+                                                                    </div>
+                                                                    <div class="detail-item"><span
+                                                                            class="ms">schedule</span><strong>Time</strong>
+                                                                        <%= ride.getFormattedTime() %>
+                                                                    </div>
+                                                                    <div class="detail-item"><span
+                                                                            class="ms">currency_rupee</span><strong>Fare</strong>₹
+                                                                        <%= String.format("%.2f", ride.getFare()) %> /
+                                                                            seat
+                                                                    </div>
+                                                                    <div class="detail-item"><span
+                                                                            class="ms">event_seat</span><strong>Seats</strong>
+                                                                        <%= ride.getAvailableSeats() %> available of <%=
+                                                                                ride.getTotalSeats() %>
+                                                                    </div>
+                                                                    <div class="detail-item"><span
+                                                                            class="ms">people</span><strong>Booked</strong>
+                                                                        <%= ride.getTotalSeats() -
+                                                                            ride.getAvailableSeats() %> passengers
+                                                                    </div>
+                                                                </div>
+                                                                <% if (ride.getStatus().equals("ACTIVE")) { %>
+                                                                    <div class="ride-actions">
+                                                                        <a href="ride?action=edit&rideId=<%= ride.getRideId() %>"
+                                                                            class="btn btn-secondary btn-sm">
+                                                                            <span class="ms">edit</span> Edit
+                                                                        </a>
+                                                                        <form action="ride" method="POST"
+                                                                            style="display:inline;"
+                                                                            onsubmit="return confirm('Cancel this ride? All bookings will be voided.');">
+                                                                            <input type="hidden" name="action"
+                                                                                value="cancel">
+                                                                            <input type="hidden" name="rideId"
+                                                                                value="<%= ride.getRideId() %>">
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger btn-sm"><span
+                                                                                    class="ms">cancel</span>
+                                                                                Cancel</button>
+                                                                        </form>
+                                                                    </div>
+                                                                    <% } else { %>
+                                                                        <div class="ride-actions">
+                                                                            <button class="btn btn-secondary btn-sm"
+                                                                                disabled><span class="ms">block</span>
+                                                                                Cancelled</button>
+                                                                        </div>
+                                                                        <% } %>
+                                                            </div>
+                                                            <% } %>
                                                 </div>
                                                 <% } %>
                     </div>
